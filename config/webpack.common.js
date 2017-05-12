@@ -49,7 +49,8 @@ module.exports = {
     // Workaround for angular/angular#11580
     new webpack.ContextReplacementPlugin(
       /angular(\\|\/)core(\\|\/)@angular/,
-      helpers.root('src')
+      helpers.root('src'),
+      {}
     ),
 
     new webpack.optimize.CommonsChunkPlugin({
