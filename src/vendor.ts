@@ -10,6 +10,8 @@ import '@angular/router';
 import 'rxjs';
 import 'toastr';
 import '../node_modules/toastr/build/toastr.css'; //You need style and css loader installed and set
+import 'jquery';
+import 'bootstrap';
 
 // Other vendors for example jQuery, Lodash or Bootstrap
 // You can import js, ts, css, sass, ...
