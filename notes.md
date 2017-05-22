@@ -17,3 +17,6 @@ Class styles bind to specific class <div [class.green]="event?.time === '8:00 am
 ngClass can do multiple styles <div [ngClass]="{green: event?.time === '8:00 am', bold: event?.time === '8:00 am'}" [ngSwitch]="event?.time">
 
 can also use a function that returns an object
+
+
+Use onchanges lifecycle event ot see if inputs changes or use a setter on input params see voting widget
