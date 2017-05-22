@@ -11,7 +11,9 @@ import {
   EventListResolver,
   CreateSessionComponent,
   SessionListComponent,
-  DurationPipe
+  DurationPipe,
+  UpvoteComponent,
+  VoterService
 } from './events/index';
 
 import { EventsAppComponent } from './events-app.component'
@@ -45,7 +47,8 @@ import { CollapsibleWellComponent, TOASTR_TOKEN, JQ_TOKEN, SimpleModalComponent,
     CollapsibleWellComponent,
     DurationPipe,
     SimpleModalComponent,
-    ModalTriggerDirective
+    ModalTriggerDirective,
+    UpvoteComponent
   ],
   providers: [
     EventService,
@@ -61,7 +64,8 @@ import { CollapsibleWellComponent, TOASTR_TOKEN, JQ_TOKEN, SimpleModalComponent,
       useValue: checkDirtyState
     },
     EventListResolver,
-    AuthService
+    AuthService,
+    VoterService
     ],
   bootstrap: [EventsAppComponent]
 })
