@@ -1,12 +1,12 @@
-import { NgModule } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpModule } from "@angular/http";
 
 import { 
   EventsListComponent,
   EventThumbnailComponent,
   EventDetailsComponent,
   CreateEventComponent,
-  EventRouteActivator,
   EventService,
   EventListResolver,
   CreateSessionComponent,
@@ -28,8 +28,10 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import * as Toastr from 'toastr';
 import * as jQuery from 'jquery';
 import { CollapsibleWellComponent, TOASTR_TOKEN, JQ_TOKEN, SimpleModalComponent, ModalTriggerDirective } from "./common/index";
+import { EventResolver } from "./events/event-resolver.service";
 @NgModule({
   imports: [
+    HttpModule,
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
@@ -60,7 +62,7 @@ import { CollapsibleWellComponent, TOASTR_TOKEN, JQ_TOKEN, SimpleModalComponent,
     {
       provide: JQ_TOKEN, useValue: jQuery
     },
-    EventRouteActivator, 
+    EventResolver, 
     { 
       provide: 'canDeactivateCreateEvent', 
       useValue: checkDirtyState

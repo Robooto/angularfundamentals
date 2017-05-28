@@ -2,53 +2,58 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Subject, Observable } from 'rxjs/Rx';
 import { IEvent } from "./event.model";
 import { ISession } from "./index";
+import { Http, Response, Headers, RequestOptions } from "@angular/http";
 
 @Injectable()
 export class EventService {
-  
+
+  constructor(private http: Http) {}
+
     getEvents(): Observable<IEvent[]> {
-      // returning an observable
-        let subject = new Subject<IEvent[]>();
-        setTimeout(() => { 
-          subject.next(EVENTS); 
-          subject.complete(); 
-        }, 100);
-        return subject;
+        return this.http.get("http://localhost:8808/api/events")
+          .map((response: Response) =>  <IEvent[]> response.json())
+          .catch(this.handleError);
     }
 
-    getEvent(id: number): IEvent{
-      return EVENTS.find(event => event.id === id);
+    getEvent(id: number): Observable<IEvent>{
+        return this.http.get(`http://localhost:8808/api/events/${id}`)
+          .map((response: Response) =>  <IEvent> response.json())
+          .catch(this.handleError);
     }
 
     saveEvent(event) {
-      event.id = 999;
-      event.sessions = []
-      EVENTS.push(event);
-    }
-
-    updateEvent(event) {
-      let index = EVENTS.findIndex(x => x.id = event.id);
-      EVENTS[index] = event;
+      let headers = new Headers({ 'Content-Type': 'application/json'});
+      let options = new RequestOptions({headers: headers});
+      return this.http.post(`http://localhost:8808/api/events`, event, options)
+        .map((response: Response) =>  <IEvent> response.json())
+        .catch(this.handleError);
     }
 
     searchSessions(searchTerm){
-      var term = searchTerm.toLocaleLowerCase();
-      var results: ISession[] = [];
+      // var term = searchTerm.toLocaleLowerCase();
+      // var results: ISession[] = [];
 
-      EVENTS.forEach(event => {
-        var matchingSessions = event.sessions.filter(session => session.name.toLocaleLowerCase().indexOf(term) > -1);
-        matchingSessions = matchingSessions.map((session: any) => {
-        session.eventId = event.id;
-          return session;
-        })
-        results = results.concat(matchingSessions);
-      });
+      // EVENTS.forEach(event => {
+      //   var matchingSessions = event.sessions.filter(session => session.name.toLocaleLowerCase().indexOf(term) > -1);
+      //   matchingSessions = matchingSessions.map((session: any) => {
+      //   session.eventId = event.id;
+      //     return session;
+      //   })
+      //   results = results.concat(matchingSessions);
+      // });
 
-      var emitter = new EventEmitter(true);
-      setTimeout(() => {
-        emitter.emit(results);
-      }, 100);
-      return emitter;
+      // var emitter = new EventEmitter(true);
+      // setTimeout(() => {
+      //   emitter.emit(results);
+      // }, 100);
+      // return emitter;
+      return this.http.get(`http://localhost:8808/api/sessions/search?search=${searchTerm}`)
+          .map((response: Response) => response.json())
+          .catch(this.handleError);
+    }
+
+    private handleError(error: Response) {
+      return Observable.throw(error.statusText);
     }
 }
 

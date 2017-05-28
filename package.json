@@ -5,6 +5,7 @@
   "description": "Example project from an angular.io guide.",
   "scripts": {
     "start": "webpack-dev-server --inline --progress --port 8080",
+    "server": "node node_modules/ng2f-server/server.js",
     "test": "karma start karma.webpack.conf.js",
     "build": "rimraf dist && webpack --config config/webpack.prod.js --bail",
     "lint": "tslint ./src/**/*.ts -t verbose"
@@ -32,7 +33,9 @@
     "jquery": "^3.2.1",
     "rxjs": "5.0.1",
     "toastr": "^2.1.2",
-    "zone.js": "^0.8.4"
+    "zone.js": "^0.8.4",
+    "ng2f-bootstrap": "0.0.4",
+    "ng2f-server": "^0.2.4"
   },
   "devDependencies": {
     "@types/jasmine": "2.5.36",
