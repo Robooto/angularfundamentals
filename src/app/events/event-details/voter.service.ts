@@ -1,19 +1,35 @@
 import { Injectable } from '@angular/core';
 import { ISession } from "../index";
+import { Http, Headers, RequestOptions, Response } from "@angular/http";
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class VoterService {
-    constructor() { }
+    constructor(private http: Http) { }
 
-    deleteVoter(session: ISession, voterName: string) {
+    deleteVoter(eventId: number,session: ISession, voterName: string) {
         session.voters = session.voters.filter(voter => voter !== voterName);
+        let url = `http://localhost:8808/api/events/${eventId}/sessions/${session.id}/voters/${voterName}`;
+        // self subscribing because we don't care about a return
+        this.http.delete(url).catch(this.handleError).subscribe();
     }
 
-    addVoter(session: ISession, voterName: string) {
+    addVoter(eventId: number, session: ISession, voterName: string) {
         session.voters.push(voterName);
+
+        let headers = new Headers({ 'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+
+        let url = `http://localhost:8808/api/events/${eventId}/sessions/${session.id}/voters/${voterName}`;
+        // self subscribing because we don't care about a return
+        this.http.post(url, {}, options).catch(this.handleError).subscribe();
     }
 
     userHasVoted(session: ISession, voterName: string) {
         return session.voters.some(voter => voter === voterName);
+    }
+
+    private handleError(error: Response) {
+        return Observable.throw(error.statusText);
     }
 }
