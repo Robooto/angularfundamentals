@@ -1,5 +1,5 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { SessionListComponent } from './session-list.component';
 import { AuthService } from '../../user/auth.service';
 import { ISession } from '../shared/event.model';
@@ -15,17 +15,17 @@ describe('SessionListComponent', () => {
     debugEl: DebugElement;
 
     beforeEach(async() => {
-        let mockAuthService = {};
-        let mockVoterService = {};
+        let mockAuthService = { isAuthenticated: () => true, currentUser: { userName: 'Test'}};
+        let mockVoterService = { userHasVoted: () => true };
 
         TestBed.configureTestingModule({
             imports: [],
             declarations: [SessionListComponent, UpvoteComponent, DurationPipe, CollapsibleWellComponent],
             providers: [
                 { provide: AuthService, useValue: mockAuthService },
-                { provide: VoterService, userValue: mockVoterService }
+                { provide: VoterService, useValue: mockVoterService }
             ],
-            schemas: []
+            schemas: [NO_ERRORS_SCHEMA] // dont throw an error on components that it does not know about
         }).compileComponents();
     });
 
@@ -47,6 +47,7 @@ describe('SessionListComponent', () => {
             fixture.detectChanges();
 
             expect(element.querySelector('[well-title]').textContent).toContain('Session 1');
+            expect(debugEl.query(By.css('[well-title]')).nativeElement.textContent).toContain('Session 1');
         })
     });
 });
