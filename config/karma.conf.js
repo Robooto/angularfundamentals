@@ -24,13 +24,14 @@ module.exports = function (config) {
       noInfo: true
     },
 
-    reporters: ['kjhtml'],
+    reporters: ['kjhtml', 'progress'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
-    autoWatch: false,
+    autoWatch: true,
     browsers: ['Chrome'],
-    singleRun: true
+    singleRun: false,
+    loggers: [{type: 'console'}]
   };
 
   config.set(_config);
